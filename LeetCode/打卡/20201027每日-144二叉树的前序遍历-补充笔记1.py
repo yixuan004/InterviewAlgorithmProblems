@@ -21,8 +21,10 @@ class Solution(object):
 			print(root.val)
 			returnList.append(root.val)
 			if root.left != None:
+				#returnList.append(root.left.val)
 				pre(root.left)
 			if root.right != None:
+				#returnList.append(root.right.val)
 				pre(root.right)
 
 		pre(root)
