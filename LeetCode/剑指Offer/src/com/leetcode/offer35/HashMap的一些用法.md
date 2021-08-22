@@ -11,5 +11,10 @@ map.get(x); // 从字典中根据key取value的操作
 ```
 
 如何遍历一个HashMap()
-
+```java
+System.out.println("通过Map.entrySet遍历key和value");
+for (Map.Entry<String, String> entry : map.entrySet()) {
+    System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
+}
+```
 

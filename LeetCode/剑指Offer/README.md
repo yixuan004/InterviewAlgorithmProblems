@@ -104,3 +104,52 @@ String s = new String();
 s.substring(n, s.length()) + s.substring(0, n);
 ```
 
+### 【day04查找算法（简单）】剑指 Offer 03. 数组中重复的数字
+第一种方法：是 数组桶 的方法，桶的方法要注意数据范围，等于说要完全开辟一块新的内存空间，时空复杂度都是O(N)；
+
+第二种方法：是HashSet的方法（因为涉及到set需要时长的复习一下），空间复杂度由于要开辟新的HashSet空间，肯定不是O(1)的；
+```java
+Set<Integer> set = new HashSet<>();
+set.add(x);方法，如果插入成功返回true（也就是set之前不包含这个元素）；如果此 set 已包含该元素，则该调用不更改 set 并返回 false
+```
+
+第三种方法：这个题用到一个很巧妙的原地替换的思想，目标是使得所有nums[i] = i，这样不用开辟新的内存空间，但这种方法的要求是，数组内的最大元素值，不能超过数组的长度
+从0开始，逐个i遍历数组，如果遇到nums[i] == i的情况，说明这个位置是符合要求的；如果遇到nums[i] != i的情况，现在遍历到的元素是nums[i]，需要把他换到nums[nums[i]]的位置，这时候如果nums[nums[i]]的位置已经是这个值了，则代表重复了，break
+
+### 【day04查找算法（简单）】剑指 Offer 53 - I. 在排序数组中查找数字 I
+题目要求在一个有序数组中查找一个数字出现了多少次，为了避免O(N)的情况，肯定是要用二分查找的
+
+但是如果先用二分查找，再O(N)遍历，那么还是退化为O(N)了
+
+所以最终的方法是通过二分查找找到边界，基本思想是，找到比目标数大的第一个数字角标，找到比目标数字小的第一个数字角标，right-left-1即可
+
+二分查找类题目模板都可以使用下边的这个，注意要分三段写判断情况
+```java
+
+int left = 0;
+int right = nums.length - 1;
+
+while (left <= right) { // 二分查找的模板套路
+    int mid = (left + right) / 2;
+    //  这里分三段写更容易理解，自己不要把情况合并到一块了
+    if (nums[mid] < binSearchTarget){
+        left = mid + 1;
+    } else if (nums[mid] > binSearchTarget){
+        right = mid - 1;
+    } else {
+        left = mid + 1; // 如果正好有target，这里的目标是找到刚刚比target大一点的那个角标
+    }
+}
+return left; // 这个地方的数字，是第一个大于目标数字的角标
+```
+ 
+###【day04查找算法（简单）】剑指 Offer 53 - II. 0～n-1中缺失的数字
+也是用二分查找的条件来判断，如果mid的那个地方，出现了mid != nums[mid]的情况，那么就说明一定在左边，最理想的条件是缺的就是前边一个
+
+换句话来说，找的right，是最后一个mid = nums[mid]的位置，由于使用的是left <= right，找到的left会是第一个不相等的位置
+
+标准二分查找中，如果循环条件写成left < right，那就会漏掉所要查找的元素恰好就位于left或者right上的这两种边界情况
+
+[0(left) (mid)，1(right)]，target=1，因为nums[mid] != 1，所以left = mid +1 (=right)，而此时left=right，不会再走下一轮，就漏掉了
+
+（关于day05 11题，为什么循环条件写成<就够了，当left == right == 0时，因为此时nums[mid]和nums[right]一样，会执行right--），这样最后会越界（特殊处理一下也可以，见第五天笔记了）
