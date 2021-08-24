@@ -187,7 +187,7 @@ for(Map.Entry<Character, Integer> entry: orderDict.entrySet()) {
 }
 ```
 
-### 【搜索与回溯算法（简单）】Offer 32 - I/II/III. 从上到下打印二叉树
+### 【day06搜索与回溯算法（简单）】Offer 32 - I/II/III. 从上到下打印二叉树
 三个题基本属于逐级扩展，笔记就全部整理在一块了，二叉树的层序遍历就是用队列实现即可
 
 如果要把每层分别输出，那么需要做类似下边代码的操作
