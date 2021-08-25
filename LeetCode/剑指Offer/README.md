@@ -206,3 +206,54 @@ deque是一个双端队列，栈和queue实际上只是用了其中的一部分
 一般来说，stack会用到stack.push() - 压栈，stack.pop() - 弹出栈顶， stack.size() - 长度，stack.peek() - 栈顶
 
 queue会用到queue.add() - 插入队尾，queue.push() - 插入队头（实际上双端队列才能这么干）；queue.poll() - 弹出队头；...
+
+### 【day07搜索与回溯算法（简单）】剑指 Offer 26. 树的子结构
+给定二叉树A，B，判断B是不是A的一个子结构。
+
+这个题首先的思路是要遍历二叉树A（一般这种遍历用递归前序遍历是最方便的），把A的每个节点都当做根节点，然后来和B进行比较
+
+其次就是实现比较函数judge，也是使用一种递归的方式，注意二叉树需要很多判空的操作，如果当前节点上AB都是null就是true；A是nullB有就是false；特别注意如果A有B是null，由于只要求B是A的子结构即可，所以也是true；而当AB均不是null的时候，则递归return judge(A.left, B.left) && judge(A.right, B.left)；
+
+注意在外层循环时的比较return方法，也要判断A B是不是null的情况，当A B都不是null的时候，return judeg(A, B) && isSubStructure(A.left, B) && isSubStructure(A.right, B); 代表几个递归下去中，只要有一组满足条件即可了；
+
+### 【day07搜索与回溯算法（简单）】剑指 Offer 27. 二叉树的镜像
+请完成一个函数，输入一个二叉树，该函数输出它的镜像。
+
+有两种解法，第一种方法是递归的解法，TreeNode mirror(TreeNode root)这个函数递归调用
+```java
+TreeNode mirrorTree(TreeNode root) {
+    if (root != null) {
+        TreeNode tempNode = root.left;
+        root.left = mirrorTree(root.right); // 调用镜像递归下去
+        root.right = mirrorTree(root.left);
+    }
+    return root;
+}
+```
+
+第二种方法是栈的解法，基本思想的描述是首先把root入栈，之后把root出栈，把root的左边 右边依次入栈，然后调转root的左边右边；之后再重复pop - 处理的操作，直到栈为空
+
+有一种把每个节点的左右依次倒转的感觉
+
+### 【day07搜索与回溯算法（简单）】剑指 Offer 28. 对称的二叉树
+请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
+
+基本就是实现一个recurseJudge函数，针对两个节点判断A的左边是不是等于B的右边，A的右边是不是等于B的左边，注意要用TreeNode.val来判断
+```java
+boolean recurseJudge(TreeNode t1, TreeNode t2) {
+    // 仅给出都不为null的情况
+    if (t1 != null && t2 != null) {
+        if (t1.val == t2.val) {
+            return recurseJudge(t1.left, t2.right) && recurseJudge(t1.right, t2.left);
+        } else {
+        return false;
+        }
+    }
+    ...
+}
+```
+
+在主执行程序中把根的左右作为首次入口（注意判断null等情况）
+```java
+recurseJudege(root.left, root.right)
+```
