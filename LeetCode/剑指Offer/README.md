@@ -358,3 +358,35 @@ StringBuilder sb = new StringBuilder();
 sb.append();
 sb.toString();
 ```
+
+### 【day14搜索与回溯算法（中等）】剑指 Offer 12. 矩阵中的路径
+题目大意：给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+
+个人分析：由于只是找到存在不存在，需要首先想到用一种dfs的思想来做
+
+主函数中很容易就能想到从矩阵当中的每个位置开启dfs，所以是一个双重循环
+
+而在每个循环到的位置处执行dfs程序，每次都要传递这个board 和 单词word
+
+dfs的编写思想如下所示：
+首先给出口，如果是越界了的情况，或者board这个位置不等于word.charAt(jishu)，则return false; 
+之后，写正确的退出条件，if (jishu == word.length - 1)，return true；
+之后是四个方向的dfs，并且需要标记哪个位置被访问过了，首先board[i][j]='\0'代表这个位置访问，之后for 0-4来走四个方向（dx dy nx ny），最后回滚退回到上一个状态board[i][j]=word.chatAt(jishu)
+
+```java
+boolean result = dfs(board, word, nx, ny, jishu + 1);
+if (result == true) {
+    return true; // 这种方法应该能起到剪枝效果吧
+}
+```
+
+### 【day14搜索与回溯算法（中等）】剑指 Offer 13. 机器人的运动范围
+题目大意：地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？
+
+个人分析：因为有多条路线，广度优先和深度优先都可以，或者说多条的比较适合广度，存在性比较适合深度？或者说这种从固定位置开始的，就需要用广度优先？而counting lakes这种多个位置开始的，深度优先？
+
+这个题想到广度优先后就很简单了，广度优先主要是使用队列的做法，初始化把开始那个位置加进去，并设置visited数组，visited和queue可以全局
+```java
+Deque<int[]> queue = new LinkedList<>(); // 这是类似C++的pair操作，要把x y同时加入queue中
+```
+这个题judge函数也比较好写，% /用一下就可以了
