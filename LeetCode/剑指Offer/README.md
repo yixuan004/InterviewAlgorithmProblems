@@ -416,3 +416,35 @@ tempList.remove(index);
 题目大意：剑指 Offer 54. 二叉搜索树的第k大节点
 
 个人分析：二叉搜索树的中序遍历就可以，然后在递归的过程中通过计数（暂时使用的是全局count），找到第k大的就可以了
+
+### 【day16排序（简单）】剑指 Offer 45. 把数组排成最小的数
+题目大意：输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+
+个人分析：这个题看到答案说证明起来比较困难，但是也先使用这种方法记录一下了，大致思路就是先把nums转化为一个个String类型的str，形成strs数组，然后通过如下的排序方式
+```java
+Arrays.sort(strNums, (x, y) -> {
+    return (x + y).compareTo(y + x);
+});
+```
+最后用StringBuilder进行append操作，result.append(str),result.toString()即可
+
+### 【day16排序（简单）】剑指 Offer 61. 扑克牌中的顺子
+
+题目大意：从若干副扑克牌中随机抽 5 张牌，判断是不是一个顺子，即这5张牌是不是连续的。2～10为数字本身，A为1，J为11，Q为12，K为13，而大、小王为 0 ，可以看成任意数字。A 不能视为 14。
+     
+个人分析：对于int[] 类型的排序如果要按照某些条件的话，按照目前的理解来说好像要转化成Integer[]才能使用带有条件的排序
+```java
+Integer[] numIntegers = new Integer[nums.length];
+for (int i = 0; i < nums.length; i++) {
+    numIntegers[i] = Integer.valueOf(nums[i]);
+}
+
+Arrays.sort(numIntegers, (x, y) -> {
+    return x - y; // 这里可以写多级排序的条件
+});
+
+for (int i = 0; i < nums.length; i++) {
+    System.out.println(numIntegers[i].intValue());
+}
+```
+之后大概就是计数有多少0，然后用0来做一个间隔填空的感觉了
