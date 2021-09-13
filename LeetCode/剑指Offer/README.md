@@ -454,3 +454,34 @@ for (int i = 0; i < nums.length; i++) {
 题目大意：输入整数数组 arr ，找出其中最小的 k 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。
 
 个人分析：这个题本意不是想让人来用Arrays.sort()直接用的，是希望自己整个快排一类的，但是在首轮刷题就用比较简单的方法实现了；
+
+### 【day18搜索与回溯算法（中等）】剑指 Offer 55 - I. 二叉树的深度
+
+题目大意： 输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。
+
+个人分析：这种二叉树的深度要搞成一种模板的操作，遇到二叉树的深度就这么写
+```java
+public int getDepth(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+    return Math.max(getDepth(root.left), getDepth(root.right)) + 1;
+}
+```
+
+### 【day18搜索与回溯算法（中等）】剑指 Offer 55 - II. 平衡二叉树
+
+题目大意：输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
+
+个人分析：首先需要实现一个返回值为二叉树深度的函数，使用55-I的public int getDepth(TreeNode root)即可
+
+在之后，在主返回函数中递归这种操作还是需要时常操作+理解的，非常巧妙
+
+```java
+public boolean isBalanced(TreeNode root) {
+    if (root == null) {
+        return true;
+    }
+    return isBalanced(root.left) && isBalanced(root.right) && Math.abs(getDepth(root.left) - getDepth(root.right)) <= 1;
+}
+```
