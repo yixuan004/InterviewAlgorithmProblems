@@ -485,3 +485,52 @@ public boolean isBalanced(TreeNode root) {
     return isBalanced(root.left) && isBalanced(root.right) && Math.abs(getDepth(root.left) - getDepth(root.right)) <= 1;
 }
 ```
+
+### 【day19搜索与回溯算法（中等）】剑指 Offer 64. 求1+2+…+n
+
+题目大意：求 1+2+...+n ，要求不能使用乘除法、for、while、if、else、switch、case等关键字及条件判断语句（A?B:C）。
+
+个人分析：这类题非常需要技巧并且需要之前了解过。在看过答案后感觉很巧妙，需要使用判断条件&&中的熔断技巧。
+```java
+// 首先把result设置为全局变量，在递归的过程中方便进行累加
+public int sumNums(int n) {
+    // 在n大于1的条件下，前边不会熔断，所以会进入到后边的递归中；而当n = 1时是一个结束递归的条件，此时由于&&的熔断机制，不会执行后边的语句
+    // 由于sumNums(n - 1)的返回值是int而不是boolean，所以需要加一个随意的永真判断条件
+    boolean x = (n > 1) && sumsNums(n - 1) > 0; 
+    
+    // 递归出栈会从这里不断地累加，有时间的话需要自己手动模拟下这种情况
+    result += n;
+    return result;
+}
+```
+
+### 【day19搜索与回溯算法（中等）】剑指 Offer 68 - I. 二叉搜索树的最近公共祖先
+
+题目大意：给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
+
+个人分析：根据这种最近公共祖先的定义，只有几种情况：
+
+p和q在其公共祖先的两边；p是q的祖先（p是root）；q是p的祖先（q是root）
+
+而这些条件的反条件是，p和q完全处在root的一边，这样需要在完全的那一边开启递归，而因为题目给出了二叉搜索树的条件，可以通过val来判断
+
+注意递归中，最后else的条件代表都满足了，return root即可
+
+### 【day19搜索与回溯算法（中等）】剑指 Offer 68 - II. 二叉树的最近公共祖先
+
+题目大意：给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+
+个人分析：和上一个题相比少了搜索树这一条件难度就加大了有一些，没有办法通过val来判断了，套前序遍历框架逐个节点的看
+
+如果root为空，或者root是p，或者root是q，就返回这个root。为空代表没找到，为p或者q代表在当前这个递归节中找到了
+
+前序遍历，获取当前节点a的左边和右边是否有返回值，此时有4种情况应该分开讨论
+
+左右都是null：这个节点的左右都找不到，那么这个节点不是最近公共祖先，return null
+
+左null，右非null，代表出现p q连在一起的情况，return非null的右边
+
+左非null，右null：带便出现p q连在一起的情况，return非null的左边
+
+左右都非null：当前root就是最近公共祖先，return root
+
